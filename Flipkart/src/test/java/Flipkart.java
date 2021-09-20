@@ -3,7 +3,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -40,20 +39,15 @@ public class Flipkart {
 
 		xpathFilters = "//*[@class='_1KOcBL']";
 				
-		if(!ReadExcel.MaxPrice.equals(null) || !ReadExcel.MaxPrice.equals("")) {
-			maxPrice(ReadExcel.MaxPrice);
-		}
-		Thread.sleep(2000);
-		
-		if(!ReadExcel.Filter1.equals(null) || !ReadExcel.Filter1.equals("")) {
-			Filter1(ReadExcel.filterName1, ReadExcel.filterValue1, xpathFilters);
-		}
+		maxPrice(ReadExcel.MaxPrice);
 		
 		Thread.sleep(2000);
 		
-		if(!ReadExcel.Filter2.equals(null) || !ReadExcel.Filter2.equals("")) {
-			Filter1(ReadExcel.filterName2, ReadExcel.filterValue2, xpathFilters);
-		}
+		Filter(ReadExcel.filterName1, ReadExcel.filterValue1, xpathFilters);
+		
+		Thread.sleep(2000);
+		
+		Filter(ReadExcel.filterName2, ReadExcel.filterValue2, xpathFilters);
 		
 		Thread.sleep(2000);
 		
@@ -71,9 +65,7 @@ public class Flipkart {
 		select.selectByValue(ReadExcel.MaxPrice);
 	}
 	
-		// Select Filter1.....Processor in this case
-	
-	
+		// launch flipkart website and search for mobile	
 	public static void LaunchFlipKartAndSearch() throws InterruptedException {
 		System.setProperty("webdriver.chrome.driver", "D:\\Flipkart\\chromedriver.exe");
 		driver = new ChromeDriver();
@@ -88,6 +80,7 @@ public class Flipkart {
 		WebElement closePopUp = driver.findElement(By.xpath("/html/body/div[2]/div/div/button"));
 		closePopUp.click();
 
+		// selecting mobile from auto suggest
 		WebElement searchBar = driver.findElement(By.name("q"));
 		searchBar.sendKeys(ReadExcel.mobileBrand);
 		Thread.sleep(2000);
@@ -98,7 +91,8 @@ public class Flipkart {
 		act.moveToElement(logo).build().perform();
 	}
 	
-	public static void Filter1(String filterName,String filterValue, String filter) {
+	// apply filter based on data provided in Input Sheet
+	public static void Filter(String filterName,String filterValue, String filter) {
 		try {
 			String xpathFilterName = filter + "/..//div[text()='"+filterName+"']";
 			String xpathFilterValuesVisible = filter + "/..//div[text()='"+filterName+"']/../..//div[2]";
@@ -184,7 +178,7 @@ public class Flipkart {
 		mobileList.add(jsonObject);
 		outputfile.write(mobileList.toJSONString());
 		outputfile.close();
-		System.out.println("JSON file created: "+jsonObject);;
+		System.out.println("Output stored in:" +ReadExcel.outPutFile);
 		
 	}
 }

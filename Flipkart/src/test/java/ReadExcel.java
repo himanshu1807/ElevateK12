@@ -3,12 +3,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -35,13 +33,12 @@ public class ReadExcel {
 	public static void ReadExcel(String FilePath) throws IOException, Exception {
 		String projectPath = System.getProperty("user.dir");
 		String InputFilePath = projectPath + "\\" + FilePath;
-		String configsheetextension = FilenameUtils.getExtension(InputFilePath);
+		//String configsheetextension = FilenameUtils.getExtension(InputFilePath);
 		
 		
 			//configSheet1 = ExcelUtility.GetSheet(configPath, "Config");
 			inputSheet = GetxlmSheet(InputFilePath, "Input");
 			int rowCount = inputSheet.getLastRowNum()+1;
-			Boolean isXLSFound = true;
 			DataFormatter format = new DataFormatter();
 			
 			for(int rowIndex=0;rowIndex<rowCount;rowIndex++) {
@@ -73,6 +70,7 @@ public class ReadExcel {
 		try
 		{
 		InputStream myXls = new FileInputStream(FilePath);	
+		@SuppressWarnings("resource")
 		XSSFWorkbook wBook = new XSSFWorkbook(myXls);
 		workSheet = wBook.getSheet(SheetName);	
 		}	
