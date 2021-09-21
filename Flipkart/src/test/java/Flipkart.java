@@ -28,6 +28,7 @@ public class Flipkart {
 	public static FileWriter outputfile;
 	public static CSVWriter writer;
 	public static JSONObject jsonObject = new JSONObject();
+	
 
 	public static void main(String[] args) throws IOException, Exception {
 
@@ -67,7 +68,7 @@ public class Flipkart {
 	
 		// launch flipkart website and search for mobile	
 	public static void LaunchFlipKartAndSearch() throws InterruptedException {
-		System.setProperty("webdriver.chrome.driver", "D:\\Flipkart\\chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "C:\\D\\Flipkart\\chromedriver.exe");
 		driver = new ChromeDriver();
 		driver.get(ReadExcel.url);
 		driver.manage().window().maximize();

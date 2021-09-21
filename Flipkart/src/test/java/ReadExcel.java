@@ -10,6 +10,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.sun.imageio.plugins.png.RowFilter;
+
 public class ReadExcel {
 	
 	
@@ -27,6 +29,7 @@ public class ReadExcel {
 	public static String filterValue2;
 	public static String screenshotPath;
 	public static String outPutFile;
+	public static Sheet filtersheet;
 	
 	
 	
@@ -38,7 +41,9 @@ public class ReadExcel {
 		
 			//configSheet1 = ExcelUtility.GetSheet(configPath, "Config");
 			inputSheet = GetxlmSheet(InputFilePath, "Input");
+			filtersheet = GetxlmSheet(InputFilePath, "FilterCriteria");
 			int rowCount = inputSheet.getLastRowNum()+1;
+			int rowsInFilterCriteria = filtersheet.getLastRowNum()+1;
 			DataFormatter format = new DataFormatter();
 			
 			for(int rowIndex=0;rowIndex<rowCount;rowIndex++) {
@@ -52,6 +57,16 @@ public class ReadExcel {
 			}
 			}
 			
+			for (int rowIndex = 0; rowIndex<rowsInFilterCriteria; rowIndex++) {
+				rowActual = filtersheet.getRow(rowIndex);
+				String parameterName2 = format.formatCellValue(rowActual.getCell(0));				
+				String value2 = format.formatCellValue(rowActual.getCell(1));
+				value2=value2.replace("\"", "");
+				if(StringUtils.isNotBlank(parameterName2) || StringUtils.isNotBlank(value2))
+				{
+					configHashMap.put(parameterName2,value2);
+				}
+			}
 			Filter1 = configHashMap.get("Filter1").toString();
 			MaxPrice = configHashMap.get("Price").toString();
 			Filter2 = configHashMap.get("Filter2").toString();
